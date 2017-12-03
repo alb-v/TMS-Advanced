@@ -41,7 +41,7 @@ enum Layer: String {
         case .intermediate:
             return 9
         case .nearest:
-            return 4
+            return 9
         }
     }
     
@@ -53,7 +53,7 @@ enum Layer: String {
         case .intermediate:
             return 10
         case .nearest:
-            return 5
+            return 10
         }
     }
     
@@ -89,11 +89,11 @@ enum Layer: String {
         case is DraggableElement.Type:
             return Layer.nearest
         case is InteractionableElement.Type:
-            return Layer.nearest
+            return Layer.intermediate //return Layer.nearest
         case is Element.Type:
             return Layer.intermediate
         case is BasicElement.Type:
-            return Layer.distant  //return Layer.intermediate
+            return Layer.distant
         case is Background.Type:
             return Layer.distant
         default:

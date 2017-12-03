@@ -10,6 +10,7 @@ public struct SceneData {
     
     public var title = Text()
     public var background: String?
+    public var cover = UIImageView()
     
     var hint = Text()
     
@@ -17,6 +18,10 @@ public struct SceneData {
     var basicElements = [BasicElementData]()
     var interactionableElements = [InteractionableData]()
     var draggableElements = [DraggableData]()
+    
+    public func loadCover(link: String) {
+        cover.downloadedFrom(link: link)
+    }
 }
 
 protocol VisualDataProtocol {
@@ -34,6 +39,7 @@ protocol SoundDataProtocol  {
 protocol DraggableDataProtocol {
     var hintOnFailure: Text { get set }
     var hintOnSuccess: Text { get set }
+    var nextSceneID: String? { get set }
 }
 
 struct BasicElementData: VisualDataProtocol, PositionableDataProtocol  {
@@ -54,6 +60,7 @@ struct InteractionableData: VisualDataProtocol, PositionableDataProtocol, SoundD
     
     var visual: String
     var position: Quadrant
+    var nextSceneID: String?
     var sound: String
     var hint: Text
 }
@@ -64,5 +71,6 @@ struct DraggableData: VisualDataProtocol, PositionableDataProtocol, DraggableDat
     var hintOnSuccess: Text
     var visual: String
     var position: Quadrant
+    var nextSceneID: String?
     var destination: Quadrant
 }

@@ -15,6 +15,7 @@ class TextToSpeech {
     var utterance: AVSpeechUtterance?
     var text, inLanguage: String?
     var atRate: Float?
+    var voiceToUse: AVSpeechSynthesisVoice?
     
     func toSpeech(text: String, inLanguage: String, atRate: Float) {
         
@@ -28,6 +29,7 @@ class TextToSpeech {
     func speech() {
         utterance = AVSpeechUtterance(string: self.text!)
         utterance?.voice = AVSpeechSynthesisVoice(language: self.inLanguage)
+        utterance?.volume = Sound.Read.volume
         utterance?.rate = self.atRate!
         synthesizer.speak(utterance!)
     }

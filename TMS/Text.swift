@@ -7,5 +7,5 @@
 //
 
 public struct Text {
-    var value = Dictionary<String, String>()
+    public var value = Dictionary<String, String>()
 }

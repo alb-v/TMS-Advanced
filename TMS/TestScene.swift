@@ -68,6 +68,7 @@ open class TestScene: SKScene, Parallax, Objects {
         h.value["IT"] = "Hint IT"
 
         interactionableElement(visual: Resource(location: .remote, nameOrURL: "http://petprojects.altervista.org/assets/images/scene1/Flatwoods_monster.png"),
+                               nextSceneID: nil,
                                scaleBy: 1.0,
                                hint: h,
                                associateSound: Resource(location: .remote, nameOrURL: "http://petprojects.altervista.org/assets/leone.mp3"),
@@ -85,6 +86,7 @@ open class TestScene: SKScene, Parallax, Objects {
         h2.value["IT"] = "hintOnFailure IT"
         
         draggableElement(visual: Resource(location: .remote, nameOrURL: "http://petprojects.altervista.org/assets/images/scene1/Flatwoods_monster.png"),
+                         nextSceneID: nil,
                          scaleBy: 1.0,
                          hintOnSuccess: h,
                          hintOnFailure: h2,

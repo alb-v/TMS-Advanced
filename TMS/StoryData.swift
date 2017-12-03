@@ -12,7 +12,7 @@ public struct StoryData {
     public var storyID: String?
     public var authorID: String?
     public var cover: String?
-    public var sound: String?
+    public var sound: Resource?
     
     public var title = Text()
     public var description = Text()

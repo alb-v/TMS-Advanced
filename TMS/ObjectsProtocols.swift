@@ -12,6 +12,7 @@ protocol Objects {
     func background(visual: Resource)
     
     func draggableElement(visual: Resource,
+                          nextSceneID: String?,
                           scaleBy s: CGFloat,
                           hintOnSuccess hs: Text,
                           hintOnFailure hf: Text,
@@ -19,6 +20,7 @@ protocol Objects {
                           destinationQuadrant dQ: Quadrant)
     
     func interactionableElement(visual: Resource,
+                                nextSceneID: String?,
                                 scaleBy s: CGFloat,
                                 hint h: Text,
                                 associateSound aS: Resource,

@@ -9,7 +9,7 @@
 /** Indica le proprietà relative ai souni della storia.
     - Author: Volpe Alberto
     - Version: 1.0 */
-enum Sound {
+public enum Sound {
     
     /** Suono associativo. */
     case Associative
@@ -20,15 +20,20 @@ enum Sound {
     /** Suono dell'intera storia. */
     case Story
     
+    /** Suono della lettura di un test. */
+    case Read
+    
     /** Il volume del corrispettivo tipo di suono. */
-    var volume: (Float) {
+    public var volume: (Float) {
         switch self {
+        case .Read:
+            return 1
         case .Associative:
-            return 1
-        case .Draggable:
-            return 1
-        case .Story:
             return 0.5
+        case .Draggable:
+            return 0.5
+        case .Story:
+            return 0.1
         }
     }
     

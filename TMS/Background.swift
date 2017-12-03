@@ -14,7 +14,7 @@ import AVFoundation
 class Background: SKSpriteNode {
     
     init(visual: Resource) {
-
+        
         let i = UIImage(visual)!
         
         super.init(texture: SKTexture(image: i), color: SKColor.clear, size: UIScreen.main.bounds.size)

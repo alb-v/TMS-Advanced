@@ -9,6 +9,8 @@
 import Foundation
 import CheatyXML
 
+//Put .remote....there is .project only for demo purpose
+
 open class XMLStoryParser {
     
     private var parser: CXMLParser
@@ -39,7 +41,7 @@ open class XMLStoryParser {
         try story.authorID = parser.rootElement.attribute(identifiers!.authorID()).string
         try story.storyID = parser.rootElement.attribute(identifiers!.storyID()).string
         try story.cover = parser.rootElement.attribute(identifiers!.cover()).string
-        try story.sound = parser.rootElement.attribute(identifiers!.sound()).string
+        try story.sound = Resource(location: .remote, nameOrURL: parser.rootElement.attribute(identifiers!.sound()).string!)
         
         try story.title = getTranslations(fromElements: parser.rootElement[identifiers!.title()][identifiers!.text()].array)
         try story.description = getTranslations(fromElements: parser.rootElement[identifiers!.description()][identifiers!.text()].array)
@@ -70,6 +72,7 @@ open class XMLStoryParser {
         var s = SceneData()
         
         try s.background = element.attribute(identifiers!.background()).stringValue
+        try s.loadCover(link: element.attribute(identifiers!.cover()).stringValue)
         try s.title = getTranslations(fromElements: element[identifiers!.title()][identifiers!.text()].array)
         try s.hint = getTranslations(fromElements: element[identifiers!.hint()][identifiers!.text()].array)
         
@@ -81,20 +84,23 @@ open class XMLStoryParser {
 
             switch child.tagName {
             case try identifiers!.draggableElement():
-                
-                var hintOnFailure = try getTranslations(fromElements: child[identifiers!.hintOnFailure()][identifiers!.text()].array)
-                var hintOnSuccess = try getTranslations(fromElements: child[identifiers!.hintOnSuccess()][identifiers!.text()].array)
+                let nextSceneID = try child.attribute(identifiers!.nextSceneID()).string
+                let hintOnFailure = try getTranslations(fromElements: child[identifiers!.hintOnFailure()][identifiers!.text()].array)
+                let hintOnSuccess = try getTranslations(fromElements: child[identifiers!.hintOnSuccess()][identifiers!.text()].array)
                 try s.draggableElements.append(DraggableData(hintOnFailure: hintOnFailure,
                                                              hintOnSuccess: hintOnSuccess,
                                                              visual: visual,
                                                              position: position,
+                                                             nextSceneID: nextSceneID,
                                                              destination: Quadrant(row: child[identifiers!.destination()].attribute(identifiers!.row()).int!,
                                                             col: child[identifiers!.destination()].attribute(identifiers!.col()).int!)))
                 
             case try identifiers!.interactionableElement():
-                var hint = try getTranslations(fromElements: child[identifiers!.hint()][identifiers!.text()].array)
+                let nextSceneID = try child.attribute(identifiers!.nextSceneID()).string
+                let hint = try getTranslations(fromElements: child[identifiers!.hint()][identifiers!.text()].array)
                 try s.interactionableElements.append(InteractionableData(visual: visual,
                                                                          position: position,
+                                                                         nextSceneID: nextSceneID,
                                                                          sound: child[identifiers!.associativeSound()].attribute(identifiers!.sound()).string!,
                                                                          hint: hint))
                 
@@ -104,7 +110,7 @@ open class XMLStoryParser {
                                                   sound: child[identifiers!.associativeSound()].attribute(identifiers!.sound()).string!))
 
             case try identifiers!.basicElement():
-                try s.basicElements.append(BasicElementData(visual: visual, position: position))
+                s.basicElements.append(BasicElementData(visual: visual, position: position))
                 
             default:
                 print("\(child.tagName) Tipo di elemento non riconosciuto")

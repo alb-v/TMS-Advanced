@@ -15,7 +15,7 @@ import AVFoundation
 protocol Playable {
     
     /** Player da eseguire. */
-    var audioStream: Player { get set }
+    var audioStream: Player? { get set }
     
     /**
      Riproduce la traccia sonora.
@@ -74,7 +74,19 @@ protocol AssociativeSound: Playable {}
 /** Definizione delle proprietà e dei metodi utili alla riproduzione della traccia sonora relativa alla storia.
     - Author: Volpe Alberto
     - Version: 1.0 */
-protocol StorySound: Playable {}
+open class StorySound: Playable {
+    public var audioStream: Player?
+    
+    public init(audioResource: Resource) {
+        audioStream = Player(audioResource, withVolume: Sound.Story.volume)
+    }
+    
+    public func play() { audioStream?.player?.play() }
+    
+    public func pause() { audioStream?.player?.pause() }
+    
+    public func stop() { audioStream?.player?.stop() }
+}
 
 
 

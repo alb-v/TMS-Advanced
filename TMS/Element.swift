@@ -10,14 +10,15 @@ import SpriteKit
 
 class Element: SKSpriteNode, Scalable, AssociativeSound, Positionable {
     
-    internal var audioStream: Player
+    internal var audioStream: Player?
     
     init(visual: Resource, scaleBy: CGFloat, associateSound sound: Resource, quadrant: Quadrant) {
         
         let i = UIImage(visual)!
         
-        audioStream = Player(sound,
-                             withVolume: Sound.volumOfThe(objectType: type(of: self)))
+        if !sound.nameOrURL.isEmpty {
+            audioStream = Player(sound, withVolume: Sound.volumOfThe(objectType: type(of: self)))
+        }else { audioStream = nil }
         
         super.init(texture: SKTexture(image: i),
                    color: SKColor.clear,

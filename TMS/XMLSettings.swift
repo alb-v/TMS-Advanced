@@ -266,6 +266,15 @@ enum XMLSchemeTags {
         }
     }
     
+    func nextSceneID() throws -> String {
+        switch self {
+        case .version_01:
+            return "tms:nextSceneID"
+        default:
+            throw XMLSchemeTagsError.tagNotPresent
+        }
+    }
+    
     func hint() throws -> String {
         switch self {
         case .version_01:

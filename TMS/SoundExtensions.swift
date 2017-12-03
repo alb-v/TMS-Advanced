@@ -13,11 +13,11 @@ import AVFoundation
 
 extension Playable {
     
-    func play() { audioStream.player?.play() }
+    func play() { audioStream?.player?.play() }
     
-    func pause() { audioStream.player?.pause() }
+    func pause() { audioStream?.player?.pause() }
     
-    func stop() { audioStream.player?.stop() }
+    func stop() { audioStream?.player?.stop() }
 }
 
 
@@ -42,6 +42,7 @@ extension AVAudioPlayer {
             let url = tmsBundle.url(forResource: sound.nameOrURL, withExtension: "mp3")!
             try self.init(contentsOf: url)
         case .project:
+            print(sound.nameOrURL)
             let url = Bundle.main.url(forResource: sound.nameOrURL, withExtension: "mp3")!
             try self.init(contentsOf: url)
         }

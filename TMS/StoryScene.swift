@@ -14,6 +14,7 @@ import CoreMotion
  
             CustomClass: StoryScene (Il nome di questa classe)
             Module: TMS (il nome del framework)
+    Put .remote....there is .project only for demo purpose
  */
 open class StoryScene: SKScene, Parallax, Objects {
     
@@ -22,9 +23,20 @@ open class StoryScene: SKScene, Parallax, Objects {
     internal var intermediateLayer: SKSpriteNode?
     internal var nearestLayer: SKSpriteNode?
     static internal let motionManager = CMMotionManager()
+    internal var language: String?
     
-    override open func didMove(to view: SKView) {
-        
+    public var tView: UITextView!
+    public var sceneViewController: UIViewController?
+    
+    func add(Text t: String) {
+        tView.text.append(t+"\n")
+        tView.scrollRangeToVisible(NSMakeRange(tView.text.count-2, 0))
+    }
+    
+    override open func didMove(to view: SKView) { }
+    
+    open func create(s: SceneData, language: String) {
+       
         distantLayer = SKSpriteNode(color: SKColor.clear,
                                     size: Layer.distant.blockSize!)
         
@@ -39,28 +51,28 @@ open class StoryScene: SKScene, Parallax, Objects {
         addChild(distantLayer!)
         addChild(intermediateLayer!)
         addChild(nearestLayer!)
-    }
-    
-    open func create(s: SceneData) {
         
-        background(visual: Resource(location: .project, nameOrURL: s.background!))
+        self.language = language
+        background(visual: Resource(location: .remote, nameOrURL: s.background!))
+        add(Text: s.hint.value[language]!)
         
         for b in s.basicElements {
             basicElement(visual: Resource(location: .remote, nameOrURL: b.visual),
-                         scaleBy: 0.1,
+                         scaleBy: 1,
                          quadrant: b.position)
         }
         
         for e in s.elements {
             element(visual: Resource(location: .remote, nameOrURL: e.visual),
-                    scaleBy: 0.1,
+                    scaleBy: 1,
                     associateSound: Resource(location: .remote, nameOrURL: e.sound),
                     quadrant: e.position)
         }
         
         for i in s.interactionableElements {
             interactionableElement(visual: Resource(location: .remote, nameOrURL: i.visual),
-                                   scaleBy: 0.1,
+                                   nextSceneID: i.nextSceneID,
+                                   scaleBy: 1,
                                    hint: i.hint,
                                    associateSound: Resource(location: .remote, nameOrURL: i.sound),
                                    quadrant: i.position)
@@ -68,7 +80,8 @@ open class StoryScene: SKScene, Parallax, Objects {
         
         for d in s.draggableElements {
             draggableElement(visual: Resource(location: .remote, nameOrURL: d.visual),
-                             scaleBy: 0.01,
+                             nextSceneID: d.nextSceneID,
+                             scaleBy: 1,
                              hintOnSuccess: d.hintOnSuccess,
                              hintOnFailure: d.hintOnFailure,
                              originalQuadrant: d.position,
@@ -91,6 +104,10 @@ open class StoryScene: SKScene, Parallax, Objects {
             case is InteractionableElement:
                 (node as! Interactionable).interactionBegan()
                 (node as! AssociativeSound).play()
+                
+                let hintToRead = (node as! InteractionableElement).hint.value[language!]!
+                (node as! Readable).read(text: hintToRead, langauge: language!)
+                add(Text: hintToRead)
             case is DraggableElement:
                 (node as! Interactionable).interactionBegan()
                 (node as! DraggableSound).playDrag()
@@ -113,9 +130,21 @@ open class StoryScene: SKScene, Parallax, Objects {
             case is DraggableElement:
                 (node as! Interactionable).interactionEnd()
                 (node as! DraggableSound).playDrop()
-                (node as! Draggable).checkPosition()
+                
+                var hintToRead = ""
+                if (node as! Draggable).checkPosition() {
+                 hintToRead = (node as! DraggableElement).hintOnSuccess.value[language!]!
+                }else{
+                  hintToRead = (node as! DraggableElement).hintOnFailure.value[language!]!
+                }
+                
+                (node as! Readable).read(text: hintToRead, langauge: language!)
+                add(Text: hintToRead)
             case is InteractionableElement:
                 (node as! Interactionable).interactionEnd()
+                if let nextSceneID = (node as! Interactionable).nextSceneID {
+                    (sceneViewController as! StoryBoard).openScene(ID: nextSceneID)
+                }
             default:
                 break
             }

@@ -15,6 +15,7 @@ extension Objects where Self: Parallax {
     }
     
     func draggableElement(visual: Resource,
+                          nextSceneID: String?,
                         scaleBy s: CGFloat,
                         hintOnSuccess hs: Text,
                         hintOnFailure hf: Text,
@@ -22,6 +23,7 @@ extension Objects where Self: Parallax {
                         destinationQuadrant dQ: Quadrant) {
     
         addToScene(DraggableElement(visual: visual,
+                                    nextSceneID: nextSceneID,
                                     hintOnSuccess: hs,
                                     hintOnFailure: hf,
                                     scaleBy: s,
@@ -30,12 +32,14 @@ extension Objects where Self: Parallax {
     }
     
     func interactionableElement(visual: Resource,
+                                nextSceneID: String?,
                                 scaleBy s: CGFloat,
                                 hint h: Text,
                                 associateSound aS: Resource,
                                 quadrant q: Quadrant) {
         
         addToScene(InteractionableElement(visual: visual,
+                                          nextSceneID: nextSceneID,
                                           hint: h,
                                           scaleBy: s,
                                           associateSound: aS,

@@ -12,7 +12,7 @@ import AVFoundation
     - Important: Per ridurre l'utilizzo di memoria il player è di tipo AVAudioPlayer al posto di SKAction.playSoundFileNamed e SKAudioNode.
     - Author: Volpe Alberto
     - Version: 1.0 */
-class Player{
+open class Player{
     
     /** Player */
     internal var player: AVAudioPlayer?
@@ -25,7 +25,7 @@ class Player{
      - Author: Volpe Alberto
      - Version: 1.0
      */
-    init(_ sound: Resource, withVolume volume: Float?) {
+    public init(_ sound: Resource, withVolume volume: Float?) {
         
         do {
             player = try AVAudioPlayer(sound)
@@ -45,7 +45,7 @@ class Player{
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
