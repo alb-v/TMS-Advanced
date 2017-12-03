@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://www.example.org/story" elementFormDefault="qualified" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tms="http://www.example.org/story">
+
+    <xsd:complexType name="Scene">
+    	<xsd:sequence>
+    		<xsd:element name="Title" type="tms:MultilanguageText"></xsd:element>
+    		<xsd:element name="Hint" type="tms:MultilanguageText"></xsd:element>
+    		<xsd:element name="Objects" type="tms:Objects"></xsd:element>
+    	</xsd:sequence>
+    	<xsd:attribute ref="tms:background" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:sceneID" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:authorID"></xsd:attribute>
+    	<xsd:attribute ref="tms:cover"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:element name="Story" type="tms:Story"></xsd:element>
+    
+    <xsd:complexType name="Story">
+    	<xsd:sequence>
+    		<xsd:element name="Title" type="tms:MultilanguageText" maxOccurs="1"
+    			minOccurs="1">
+    		</xsd:element>
+    		<xsd:element name="Description" type="tms:MultilanguageText"
+    			maxOccurs="1" minOccurs="1">
+    		</xsd:element>
+    		<xsd:element name="Languages" type="tms:Language"
+    			maxOccurs="1" minOccurs="1">
+    		</xsd:element>
+    		<xsd:element name="Scenes" type="tms:Scenes"
+    			maxOccurs="1" minOccurs="1">
+    		</xsd:element>
+    	</xsd:sequence>
+        <xsd:attribute ref="tms:xmlSchema" use="required"></xsd:attribute>
+        <xsd:attribute ref="tms:authorID" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:storyID" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:cover" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:sound" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:complexType name="BasicElement">
+    	<xsd:sequence>
+    		<xsd:element name="Positionable" type="tms:Quadrant"></xsd:element>
+    	</xsd:sequence>
+    	<xsd:attribute ref="tms:visual" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+
+
+    <xsd:element name="Scenes" type="tms:Scenes"></xsd:element>
+
+
+
+    <xsd:attribute name="storyID" type="xsd:string"></xsd:attribute>
+
+    <xsd:attribute name="authorID" type="xsd:string"></xsd:attribute>
+
+
+
+    <xsd:attribute name="cover" type="xsd:anyURI"></xsd:attribute>
+
+    <xsd:attribute name="visual" type="xsd:anyURI"></xsd:attribute>
+
+    <xsd:attribute name="sound" type="xsd:anyURI"></xsd:attribute>
+
+    <xsd:attribute name="language" type="xsd:language"></xsd:attribute>
+
+    <xsd:complexType name="Text">
+    	<xsd:sequence>
+    		<xsd:element name="value" type="xsd:string"></xsd:element>
+    	</xsd:sequence>
+    	<xsd:attribute ref="tms:language" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+    <xsd:attribute name="xmlSchema" type="xsd:string"></xsd:attribute>
+
+    <xsd:complexType name="Language">
+    	<xsd:sequence>
+    		<xsd:element name="Language" type="xsd:language" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="MultilanguageText">
+    	<xsd:sequence>
+    		<xsd:element name="Text" type="tms:Text" maxOccurs="unbounded" minOccurs="1"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="Scenes">
+    	<xsd:sequence>
+    		<xsd:element name="Scene" type="tms:Scene" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:attribute name="background" type="xsd:anyURI"></xsd:attribute>
+
+    <xsd:attribute name="sceneID" type="xsd:string"></xsd:attribute>
+
+    <xsd:attribute name="col" type="xsd:int"></xsd:attribute>
+
+    <xsd:attribute name="row" type="xsd:int"></xsd:attribute>
+
+
+    <xsd:complexType name="Quadrant">
+    	<xsd:attribute ref="tms:col" use="required"></xsd:attribute>
+    	<xsd:attribute ref="tms:row" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+
+
+
+    <xsd:complexType name="Sound">
+    	<xsd:attribute ref="tms:sound" use="required"></xsd:attribute>
+    </xsd:complexType>
+
+
+
+    <xsd:complexType name="Element">
+    	<xsd:complexContent>
+    		<xsd:extension base="tms:BasicElement">
+    			<xsd:sequence>
+    				<xsd:element name="AssociativeSound" type="tms:Sound"></xsd:element>
+    			</xsd:sequence>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="DraggableElement">
+    	<xsd:complexContent>
+    		<xsd:extension base="tms:BasicElement">
+    			<xsd:sequence>
+    				<xsd:element name="Destination"
+    					type="tms:Quadrant">
+    				</xsd:element>
+    				<xsd:element name="HintOnFailure"
+    					type="tms:MultilanguageText">
+    				</xsd:element>
+    				<xsd:element name="HintOnSuccess"
+    					type="tms:MultilanguageText">
+    				</xsd:element>
+    			</xsd:sequence>
+    			<xsd:attribute ref="tms:nextSceneID"></xsd:attribute>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+
+
+    <xsd:complexType name="InteractionableElement">
+    	<xsd:complexContent>
+    		<xsd:extension base="tms:Element">
+    			<xsd:sequence>
+    				<xsd:element name="Hint"
+    					type="tms:MultilanguageText">
+    				</xsd:element>
+    			</xsd:sequence>
+    			<xsd:attribute ref="tms:nextSceneID"></xsd:attribute>
+    		</xsd:extension>
+    	</xsd:complexContent>
+    </xsd:complexType>
+    
+    <xsd:attribute name="nextSceneID" type="xsd:string"></xsd:attribute>
+
+    <xsd:complexType name="Objects">
+    	<xsd:sequence>
+    		<xsd:element name="BasicElement" type="tms:BasicElement" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    		<xsd:element name="Element" type="tms:Element" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    		<xsd:element name="InteractionableElement"
+    			type="tms:InteractionableElement" maxOccurs="unbounded" minOccurs="0">
+    		</xsd:element>
+    		<xsd:element name="DraggableElement" type="tms:DraggableElement" maxOccurs="unbounded" minOccurs="0"></xsd:element>
+    	</xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
